@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: mowafy-sender
+    env: python
+    plan: free
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && uvicorn app:app --host 0.0.0.0 --port 8000"
+    envVars:
+      - key: FB_APP_ID
+        value: "856582480115080"
+      - key: FB_APP_SECRET
+        value: "44d1bad3e4de8561401aef37c5"
+      - key: FERNET_KEY
+        generateValue: true
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: "sqlite+aiosqlite:///./mowafy.db"
+      - key: BACKEND_URL
+        fromService:
+          name: mowafy-sender
+          property: url
